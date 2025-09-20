@@ -1,0 +1,65 @@
+[
+  {
+    "id_tier": "CLI-001",
+    "type": "client",
+    "nom": "Client A",
+    "contact": "M. Hassan",
+    "telephone": "+25377000111",
+    "email": "client.a@example.com",
+    "adresse": "Djibouti-ville"
+  },
+  {
+    "id_tier": "CLI-002",
+    "type": "client",
+    "nom": "Client B",
+    "contact": "Mme. Farah",
+    "telephone": "+25377000222",
+    "email": "client.b@example.com",
+    "adresse": "Arta"
+  },
+  {
+    "id_tier": "CLI-003",
+    "type": "client",
+    "nom": "Client C",
+    "contact": "M. Omar",
+    "telephone": "+25377000333",
+    "email": "client.c@example.com",
+    "adresse": "Obock"
+  },
+  {
+    "id_tier": "CLI-004",
+    "type": "client",
+    "nom": "Client D",
+    "contact": "Mme. Nadra",
+    "telephone": "+25377000444",
+    "email": "client.d@example.com",
+    "adresse": "Tadjourah"
+  },
+  {
+    "id_tier": "FOU-001",
+    "type": "fournisseur",
+    "nom": "Fournisseur Bureau",
+    "contact": "Service commercial",
+    "telephone": "+25377999888",
+    "email": "contact@fourniburo.dj",
+    "adresse": "Balbala"
+  },
+  {
+    "id_tier": "FOU-002",
+    "type": "fournisseur",
+    "nom": "Energie Plus",
+    "contact": "Support",
+    "telephone": "+25377999777",
+    "email": "support@energieplus.dj",
+    "adresse": "Boulaos"
+  },
+  {
+    "id_tier": "FOU-003",
+    "type": "fournisseur",
+    "nom": "Djib Telecom",
+    "contact": "Relation Entreprise",
+    "telephone": "+25377999666",
+    "email": "sales@djibtelecom.dj",
+    "adresse": "Djibouti-ville"
+  }
+]

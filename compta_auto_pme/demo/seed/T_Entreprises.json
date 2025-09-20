@@ -1,0 +1,12 @@
+[
+  {
+    "id_entreprise": "ENTR-001",
+    "nom": "PME Alpha",
+    "logo_url": "https://dummyimage.com/200x200/184E77/ffffff&text=PME",
+    "adresse": "Quartier Industriel, Djibouti",
+    "telephone": "+25377123456",
+    "email": "contact@pmalpha.dj",
+    "devise_defaut": "FDJ",
+    "tva_applicable": true
+  }
+]

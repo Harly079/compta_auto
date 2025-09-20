@@ -1,0 +1,12 @@
+{
+  "T_Mouvements": {
+    "A_valider": {"filter": "statut = 'brouillon' AND ai_confiance < 0.7"},
+    "Valides": {"filter": "statut = 'valide'"},
+    "Historique": {"filter": "true"}
+  },
+  "T_Factures": {
+    "A_generer": {"filter": "statut = 'brouillon'"},
+    "A_envoyer": {"filter": "statut = 'envoye' OR pdf_url != ''"},
+    "Retard": {"filter": "statut = 'retard'"}
+  }
+}

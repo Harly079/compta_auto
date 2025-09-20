@@ -1,0 +1,164 @@
+{
+  "name": "Compta Auto - WhatsApp Ingest",
+  "description": "Reçoit des messages WhatsApp, OCR des pièces jointes, classe et crée un mouvement brouillon dans Airtable.",
+  "version": 2,
+  "metadata": {
+    "createdBy": "GPT-5 Codex",
+    "tags": ["whatsapp", "airtable", "ocr", "openai"]
+  },
+  "connections": {
+    "webhook": {"type": "webhook", "respondWithJson": true},
+    "airtable": {"type": "airtable", "token": "{{env.AIRTABLE_API_KEY}}", "baseId": "{{env.AIRTABLE_BASE_ID}}"},
+    "openai": {"type": "http", "baseUrl": "https://api.openai.com/v1", "headers": {"Authorization": "Bearer {{env.OPENAI_API_KEY}}"}},
+    "slack": {"type": "slack", "token": "{{env.SLACK_BOT_TOKEN}}"},
+    "email": {"type": "smtp", "host": "{{env.SMTP_HOST}}", "port": 587, "username": "{{env.SMTP_USER}}", "password": "{{env.SMTP_PASS}}"}
+  },
+  "modules": [
+    {
+      "id": 1,
+      "name": "Webhook - WhatsApp",
+      "type": "webhook",
+      "parameters": {
+        "method": "POST",
+        "path": "whatsapp-ingest",
+        "respond": true,
+        "response": {"status": 200, "body": {"ok": true}}
+      }
+    },
+    {
+      "id": 2,
+      "name": "Iterator - Attachments",
+      "type": "iterator",
+      "parameters": {
+        "array": "{{1.body.entry[0].changes[0].value.messages[0].attachments}}"
+      }
+    },
+    {
+      "id": 3,
+      "name": "HTTP - Vision OCR",
+      "type": "http",
+      "parameters": {
+        "method": "POST",
+        "url": "https://vision.googleapis.com/v1/images:annotate?key={{env.GVISION_API_KEY}}",
+        "headers": {"Content-Type": "application/json"},
+        "body": {
+          "requests": [
+            {
+              "image": {"source": {"imageUri": "{{2.current.url}}"}},
+              "features": [{"type": "TEXT_DETECTION"}]
+            }
+          ]
+        }
+      },
+      "filter": {
+        "type": "condition",
+        "value": "{{2.current.url}}",
+        "operator": "exists"
+      }
+    },
+    {
+      "id": 4,
+      "name": "Set - Transaction Payload",
+      "type": "transform",
+      "parameters": {
+        "assignments": {
+          "description": "{{if(3.body.responses[0].fullTextAnnotation.text, 3.body.responses[0].fullTextAnnotation.text, 1.body.entry[0].changes[0].value.messages[0].text.body)}}",
+          "montant": "{{number(1.body.entry[0].changes[0].value.messages[0].text.body; 'number')}}",
+          "type": "{{if(contains(lower(1.body.entry[0].changes[0].value.messages[0].text.body); 'vente'), 'vente', 'depense')}}",
+          "id_tier": "{{1.body.entry[0].changes[0].value.contacts[0].wa_id}}",
+          "source": "whatsapp"
+        }
+      }
+    },
+    {
+      "id": 5,
+      "name": "HTTP - OpenAI Classify",
+      "type": "http",
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "headers": {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer {{env.OPENAI_API_KEY}}"
+        },
+        "body": {
+          "model": "{{env.OPENAI_MODEL_TEXT}}",
+          "messages": [
+            {"role": "system", "content": "Tu es un assistant de pré-comptabilité pour PME."},
+            {"role": "user", "content": "Classifie la dépense suivante en JSON: {{4.description}}"}
+          ],
+          "temperature": 0.1
+        }
+      }
+    },
+    {
+      "id": 6,
+      "name": "Airtable - Create Movement",
+      "type": "airtable",
+      "parameters": {
+        "operation": "createRecord",
+        "tableId": "T_Mouvements",
+        "fields": {
+          "id_entreprise": "ENTR-001",
+          "date": "{{formatDate(now(); 'YYYY-MM-DD')}}",
+          "type": "{{4.type}}",
+          "montant": "{{number(4.montant)}}",
+          "devise": "FDJ",
+          "mode_paiement": "mobile_money",
+          "id_tier": "{{4.id_tier}}",
+          "categorie": "{{json(5.body.choices[0].message.content).categorie}}",
+          "description": "{{4.description}}",
+          "ai_confiance": "{{json(5.body.choices[0].message.content).score_confiance}}",
+          "statut": "brouillon",
+          "source": "whatsapp"
+        }
+      }
+    },
+    {
+      "id": 7,
+      "name": "Router - confiance",
+      "type": "router",
+      "branches": [
+        {
+          "id": 71,
+          "name": "Confiance basse",
+          "condition": "{{json(5.body.choices[0].message.content).score_confiance}} < 0.7",
+          "to": [8, 9]
+        },
+        {
+          "id": 72,
+          "name": "Confiance OK",
+          "condition": "{{json(5.body.choices[0].message.content).score_confiance}} >= 0.7",
+          "to": []
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "name": "Slack - Alerte",
+      "type": "slack",
+      "parameters": {
+        "channel": "{{env.SLACK_ALERT_CHANNEL}}",
+        "text": "Nouvelle pièce WhatsApp à valider: {{4.description}} (score {{json(5.body.choices[0].message.content).score_confiance}})"
+      }
+    },
+    {
+      "id": 9,
+      "name": "Email - Notification",
+      "type": "email",
+      "parameters": {
+        "to": "{{env.NOTIF_EMAIL}}",
+        "subject": "Mouvement WhatsApp à valider",
+        "body": "Bonjour,\nUn mouvement WhatsApp nécessite validation. Description: {{4.description}}."
+      }
+    }
+  ],
+  "links": [
+    {"from": 1, "to": 2},
+    {"from": 2, "to": 3},
+    {"from": 3, "to": 4},
+    {"from": 4, "to": 5},
+    {"from": 5, "to": 6},
+    {"from": 6, "to": 7}
+  ]
+}

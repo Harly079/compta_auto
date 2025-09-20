@@ -1,0 +1,6 @@
+{
+  "Admin": ["T_*:read","T_*:write"],
+  "Comptable": ["T_*:read","T_Mouvements:write","T_Factures:write","T_Reglements:write"],
+  "Employe": ["T_Mouvements:write","T_Mouvements:read"],
+  "Lecteur": ["T_*:read"]
+}

@@ -1,0 +1,113 @@
+{
+  "name": "Compta Auto - Monthly Report",
+  "description": "Compile les chiffres clés, résume avec OpenAI et envoie un rapport PDF mensuel.",
+  "version": 2,
+  "metadata": {
+    "createdBy": "GPT-5 Codex",
+    "tags": ["report", "monthly", "openai", "pdf"]
+  },
+  "connections": {
+    "scheduler": {"type": "cron", "expression": "0 8 1 * *"},
+    "airtable": {"type": "airtable", "token": "{{env.AIRTABLE_API_KEY}}", "baseId": "{{env.AIRTABLE_BASE_ID}}"},
+    "openai": {"type": "http", "baseUrl": "https://api.openai.com/v1"},
+    "pdf": {"type": "pdf"},
+    "email": {"type": "smtp", "host": "{{env.SMTP_HOST}}", "port": 587, "username": "{{env.SMTP_USER}}", "password": "{{env.SMTP_PASS}}"}
+  },
+  "modules": [
+    {
+      "id": 1,
+      "name": "Scheduler - Monthly",
+      "type": "scheduler",
+      "parameters": {
+        "cron": "0 8 1 * *",
+        "timezone": "Africa/Djibouti"
+      }
+    },
+    {
+      "id": 2,
+      "name": "Airtable - Fetch Mouvements",
+      "type": "airtable",
+      "parameters": {
+        "operation": "listRecords",
+        "tableId": "T_Mouvements",
+        "filterByFormula": "DATETIME_FORMAT({date}, 'YYYY-MM') = DATETIME_FORMAT(NOW(), 'YYYY-MM')",
+        "fields": ["montant", "type", "categorie", "statut"]
+      }
+    },
+    {
+      "id": 3,
+      "name": "Aggregator - Metrics",
+      "type": "transform",
+      "parameters": {
+        "assignments": {
+          "totalVentes": "{{sum(select(2.records; record -> record.fields.type = 'vente'); 'montant')}}",
+          "totalDepenses": "{{sum(select(2.records; record -> record.fields.type = 'depense'); 'montant')}}",
+          "nbBrouillons": "{{count(select(2.records; record -> record.fields.statut = 'brouillon'))}}",
+          "categoriesTop": "{{top(select(2.records; record -> record.fields.type = 'depense'); 'categorie', 3)}}"
+        }
+      }
+    },
+    {
+      "id": 4,
+      "name": "HTTP - OpenAI Summary",
+      "type": "http",
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "headers": {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer {{env.OPENAI_API_KEY}}"
+        },
+        "body": {
+          "model": "{{env.OPENAI_MODEL_TEXT}}",
+          "messages": [
+            {
+              "role": "system",
+              "content": "Tu es un analyste financier. Rédige en français un résumé de 150-200 mots et propose 3 actions.">
+            },
+            {
+              "role": "user",
+              "content": "Total ventes: {{3.totalVentes}} FDJ. Total dépenses: {{3.totalDepenses}} FDJ. Brouillons: {{3.nbBrouillons}}. Top dépenses: {{3.categoriesTop}}."
+            }
+          ],
+          "temperature": 0.2
+        }
+      }
+    },
+    {
+      "id": 5,
+      "name": "PDF - Build Report",
+      "type": "pdf",
+      "parameters": {
+        "title": "Rapport mensuel {{formatDate(now(); 'YYYY-MM')}}",
+        "sections": [
+          {"heading": "Synthèse", "body": "{{4.body.choices[0].message.content}}"},
+          {"heading": "Tableau de bord", "body": "Ventes: {{3.totalVentes}} FDJ\nDépenses: {{3.totalDepenses}} FDJ\nBrouillons: {{3.nbBrouillons}}"}
+        ]
+      }
+    },
+    {
+      "id": 6,
+      "name": "Email - Send Report",
+      "type": "email",
+      "parameters": {
+        "to": "{{env.CEO_EMAIL}}",
+        "subject": "Rapport mensuel {{formatDate(now(); 'YYYY-MM')}}",
+        "body": "Bonjour,\nVoici le rapport mensuel généré automatiquement.",
+        "attachments": [
+          {
+            "content": "{{5.document}}",
+            "filename": "rapport-{{formatDate(now(); 'YYYY-MM')}}.pdf"
+          }
+        ]
+      }
+    }
+  ],
+  "links": [
+    {"from": 1, "to": 2},
+    {"from": 2, "to": 3},
+    {"from": 3, "to": 4},
+    {"from": 4, "to": 5},
+    {"from": 5, "to": 6}
+  ]
+}
