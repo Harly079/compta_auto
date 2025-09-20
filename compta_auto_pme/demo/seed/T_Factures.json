@@ -1,0 +1,116 @@
+[
+  {
+    "id_facture": "FAC-2025-001",
+    "id_entreprise": "ENTR-001",
+    "id_client": "CLI-001",
+    "date": "2025-09-02",
+    "due_date": "2025-09-17",
+    "items": [
+      {
+        "designation": "SaaS Septembre",
+        "qte": 1,
+        "pu": 450000
+      }
+    ],
+    "total_ht": 450000,
+    "tva": 45000,
+    "total_ttc": 495000,
+    "statut": "paye",
+    "pdf_url": ""
+  },
+  {
+    "id_facture": "FAC-2025-002",
+    "id_entreprise": "ENTR-001",
+    "id_client": "CLI-002",
+    "date": "2025-09-05",
+    "due_date": "2025-09-20",
+    "items": [
+      {
+        "designation": "Campagne marketing",
+        "qte": 1,
+        "pu": 320000
+      }
+    ],
+    "total_ht": 320000,
+    "tva": 32000,
+    "total_ttc": 352000,
+    "statut": "envoye",
+    "pdf_url": ""
+  },
+  {
+    "id_facture": "FAC-2025-003",
+    "id_entreprise": "ENTR-001",
+    "id_client": "CLI-003",
+    "date": "2025-09-09",
+    "due_date": "2025-09-24",
+    "items": [
+      {
+        "designation": "Licence ERP",
+        "qte": 1,
+        "pu": 275000
+      }
+    ],
+    "total_ht": 275000,
+    "tva": 27500,
+    "total_ttc": 302500,
+    "statut": "envoye",
+    "pdf_url": ""
+  },
+  {
+    "id_facture": "FAC-2025-004",
+    "id_entreprise": "ENTR-001",
+    "id_client": "CLI-004",
+    "date": "2025-09-12",
+    "due_date": "2025-09-27",
+    "items": [
+      {
+        "designation": "Maintenance trimestrielle",
+        "qte": 1,
+        "pu": 210000
+      }
+    ],
+    "total_ht": 210000,
+    "tva": 21000,
+    "total_ttc": 231000,
+    "statut": "brouillon",
+    "pdf_url": ""
+  },
+  {
+    "id_facture": "FAC-2025-005",
+    "id_entreprise": "ENTR-001",
+    "id_client": "CLI-002",
+    "date": "2025-09-18",
+    "due_date": "2025-10-03",
+    "items": [
+      {
+        "designation": "Support applicatif",
+        "qte": 1,
+        "pu": 330000
+      }
+    ],
+    "total_ht": 330000,
+    "tva": 33000,
+    "total_ttc": 363000,
+    "statut": "envoye",
+    "pdf_url": ""
+  },
+  {
+    "id_facture": "FAC-2025-006",
+    "id_entreprise": "ENTR-001",
+    "id_client": "CLI-003",
+    "date": "2025-09-25",
+    "due_date": "2025-10-10",
+    "items": [
+      {
+        "designation": "Pack CRM",
+        "qte": 1,
+        "pu": 285000
+      }
+    ],
+    "total_ht": 285000,
+    "tva": 28500,
+    "total_ttc": 313500,
+    "statut": "brouillon",
+    "pdf_url": ""
+  }
+]

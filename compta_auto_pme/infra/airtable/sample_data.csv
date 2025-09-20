@@ -1,0 +1,9 @@
+table,data
+T_Entreprises,"{\"id_entreprise\":\"ENTR-001\",\"nom\":\"PME Alpha\",\"devise_defaut\":\"FDJ\",\"tva_applicable\":true,\"telephone\":\"+25377123456\",\"email\":\"contact@pmalpha.dj\"}"
+T_Tiers,"{\"id_tier\":\"CLI-001\",\"type\":\"client\",\"nom\":\"Client A\",\"telephone\":\"+25377000111\",\"email\":\"client.a@example.com\"}"
+T_Tiers,"{\"id_tier\":\"FOU-001\",\"type\":\"fournisseur\",\"nom\":\"Fournisseur Bureau\",\"telephone\":\"+25377999888\",\"email\":\"contact@fourniburo.dj\"}"
+T_Mouvements,"{\"id_mvt\":\"MVT-001\",\"id_entreprise\":\"ENTR-001\",\"date\":\"2025-09-01\",\"type\":\"vente\",\"montant\":450000,\"devise\":\"FDJ\",\"mode_paiement\":\"virement\",\"id_tier\":\"CLI-001\",\"categorie\":\"Ventes-Produits\",\"description\":\"Vente bouquet services\",\"ai_confiance\":0.92,\"statut\":\"valide\",\"source\":\"form\"}"
+T_Mouvements,"{\"id_mvt\":\"MVT-002\",\"id_entreprise\":\"ENTR-001\",\"date\":\"2025-09-05\",\"type\":\"depense\",\"montant\":25000,\"devise\":\"FDJ\",\"mode_paiement\":\"cash\",\"id_tier\":\"FOU-001\",\"categorie\":\"Fournitures\",\"description\":\"Achat papier et stylos\",\"ai_confiance\":0.86,\"statut\":\"valide\",\"source\":\"whatsapp\"}"
+T_Factures,"{\"id_facture\":\"FAC-001\",\"id_entreprise\":\"ENTR-001\",\"id_client\":\"CLI-001\",\"date\":\"2025-09-02\",\"due_date\":\"2025-09-17\",\"items\":\"[{\\\"designation\\\":\\\"Abonnement support\\\",\\\"qte\\\":1,\\\"pu\\\":450000}]\",\"total_ht\":450000,\"tva\":45000,\"total_ttc\":495000,\"statut\":\"envoye\",\"pdf_url\":\"\"}"
+T_Reglements,"{\"id_regl\":\"REG-001\",\"id_facture\":\"FAC-001\",\"date_paiement\":\"2025-09-10\",\"montant\":495000,\"mode_paiement\":\"virement\"}"
+T_Rapports,"{\"id_rapport\":\"RAP-2025-08\",\"periode\":\"2025-08\",\"resume_txt\":\"Chiffre d'affaires stable, dépenses bureautiques en hausse.\",\"pdf_url\":\"\"}"

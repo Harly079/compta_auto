@@ -1,0 +1,30 @@
+[
+  {
+    "id_regl": "REG-2025-001",
+    "id_facture": "FAC-2025-001",
+    "date_paiement": "2025-09-10",
+    "montant": 495000,
+    "mode_paiement": "virement"
+  },
+  {
+    "id_regl": "REG-2025-002",
+    "id_facture": "FAC-2025-002",
+    "date_paiement": "2025-09-22",
+    "montant": 352000,
+    "mode_paiement": "virement"
+  },
+  {
+    "id_regl": "REG-2025-003",
+    "id_facture": "FAC-2025-003",
+    "date_paiement": "2025-09-30",
+    "montant": 302500,
+    "mode_paiement": "carte"
+  },
+  {
+    "id_regl": "REG-2025-004",
+    "id_facture": "FAC-2025-005",
+    "date_paiement": "2025-10-05",
+    "montant": 363000,
+    "mode_paiement": "virement"
+  }
+]

@@ -1,0 +1,114 @@
+{
+  "name": "Compta Auto - Invoice PDF Send",
+  "description": "Génère un PDF facture via l'API puis l'envoie par WhatsApp et email.",
+  "version": 2,
+  "metadata": {
+    "createdBy": "GPT-5 Codex",
+    "tags": ["invoice", "pdf", "whatsapp", "email"]
+  },
+  "connections": {
+    "airtable": {"type": "airtable", "token": "{{env.AIRTABLE_API_KEY}}", "baseId": "{{env.AIRTABLE_BASE_ID}}"},
+    "api": {"type": "http", "baseUrl": "{{env.API_BASE_URL}}"},
+    "whatsapp": {"type": "http", "baseUrl": "https://graph.facebook.com/v19.0/{{env.WHATSAPP_PHONE_ID}}"},
+    "email": {"type": "smtp", "host": "{{env.SMTP_HOST}}", "port": 587, "username": "{{env.SMTP_USER}}", "password": "{{env.SMTP_PASS}}"}
+  },
+  "modules": [
+    {
+      "id": 1,
+      "name": "Airtable Watch - A_generer",
+      "type": "airtable",
+      "parameters": {
+        "operation": "watchView",
+        "tableId": "T_Factures",
+        "viewId": "A_generer",
+        "limit": 10
+      }
+    },
+    {
+      "id": 2,
+      "name": "HTTP - Generate PDF",
+      "type": "http",
+      "parameters": {
+        "method": "POST",
+        "url": "{{connections.api.baseUrl}}/pdf/invoice",
+        "headers": {"Content-Type": "application/json"},
+        "body": {
+          "entreprise": {
+            "nom": "{{1.record.id_entreprise[0].fields.nom}}",
+            "tva": "{{if(1.record.id_entreprise[0].fields.tva_applicable; 0.10; 0)}}",
+            "devise": "{{1.record.id_entreprise[0].fields.devise_defaut}}"
+          },
+          "client": {
+            "nom": "{{1.record.id_client[0].fields.nom}}",
+            "email": "{{1.record.id_client[0].fields.email}}"
+          },
+          "items": "{{parseJson(1.record.items)}}",
+          "date": "{{1.record.date}}",
+          "due_date": "{{1.record.due_date}}",
+          "meta": {
+            "facture_id": "{{1.record.id_facture}}"
+          }
+        }
+      }
+    },
+    {
+      "id": 3,
+      "name": "Airtable - Update PDF URL",
+      "type": "airtable",
+      "parameters": {
+        "operation": "updateRecord",
+        "tableId": "T_Factures",
+        "recordId": "{{1.record.id}}",
+        "fields": {
+          "pdf_url": "{{connections.api.baseUrl}}{{2.body.url}}",
+          "statut": "envoye"
+        }
+      }
+    },
+    {
+      "id": 4,
+      "name": "HTTP - WhatsApp Document",
+      "type": "http",
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v19.0/{{env.WHATSAPP_PHONE_ID}}/messages",
+        "headers": {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer {{env.WHATSAPP_TOKEN}}"
+        },
+        "body": {
+          "messaging_product": "whatsapp",
+          "to": "{{1.record.id_client[0].fields.telephone}}",
+          "type": "document",
+          "document": {
+            "link": "{{connections.api.baseUrl}}{{2.body.url}}",
+            "filename": "{{1.record.id_facture}}.pdf",
+            "caption": "Facture {{1.record.id_facture}}"
+          }
+        }
+      }
+    },
+    {
+      "id": 5,
+      "name": "Email - Send Invoice",
+      "type": "email",
+      "parameters": {
+        "to": "{{1.record.id_client[0].fields.email}}",
+        "subject": "Votre facture {{1.record.id_facture}}",
+        "body": "Bonjour {{1.record.id_client[0].fields.nom}},\nVeuillez trouver votre facture au format PDF : {{connections.api.baseUrl}}{{2.body.url}}.",
+        "attachments": [
+          {
+            "url": "{{connections.api.baseUrl}}{{2.body.url}}",
+            "filename": "{{1.record.id_facture}}.pdf"
+          }
+        ]
+      }
+    }
+  ],
+  "links": [
+    {"from": 1, "to": 2},
+    {"from": 2, "to": 3},
+    {"from": 3, "to": 4},
+    {"from": 3, "to": 5}
+  ]
+}
