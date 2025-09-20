@@ -1,0 +1,64 @@
+{
+  "views": [
+    {
+      "table": "T_Mouvements",
+      "name": "Brouillon - À valider",
+      "filters": [
+        { "field": "statut", "operator": "is", "value": "brouillon" }
+      ],
+      "fields": ["date", "description", "montant", "categorie", "ai_confiance", "source"]
+    },
+    {
+      "table": "T_Mouvements",
+      "name": "Validés",
+      "filters": [
+        { "field": "statut", "operator": "is", "value": "valide" }
+      ],
+      "fields": ["date", "description", "montant", "categorie", "id_tier", "mode_paiement"]
+    },
+    {
+      "table": "T_Factures",
+      "name": "À envoyer",
+      "filters": [
+        { "field": "statut", "operator": "is", "value": "brouillon" }
+      ],
+      "fields": ["date", "id_client", "total_ttc", "pdf_url"]
+    },
+    {
+      "table": "T_Factures",
+      "name": "En retard",
+      "filters": [
+        { "field": "statut", "operator": "is", "value": "retard" }
+      ],
+      "fields": ["date", "due_date", "id_client", "total_ttc"]
+    },
+    {
+      "table": "T_Rapports",
+      "name": "Historique",
+      "filters": [],
+      "fields": ["periode", "resume_txt", "pdf_url"]
+    }
+  ],
+  "roles": [
+    {
+      "name": "Admin",
+      "tables": "all",
+      "permissions": "edit"
+    },
+    {
+      "name": "Comptable",
+      "tables": ["T_Mouvements", "T_Factures", "T_Reglements", "T_Rapports"],
+      "permissions": "edit"
+    },
+    {
+      "name": "Employé",
+      "tables": ["T_Mouvements", "T_Factures"],
+      "permissions": "add"
+    },
+    {
+      "name": "Lecteur",
+      "tables": ["T_Mouvements", "T_Factures", "T_Rapports"],
+      "permissions": "read"
+    }
+  ]
+}

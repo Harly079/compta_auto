@@ -1,0 +1,146 @@
+{
+  "name": "Compta-Auto - WhatsApp Ingest",
+  "description": "Capture des pièces WhatsApp, OCR, création brouillon Airtable et classification IA.",
+  "metadata": {
+    "version": "1.0.0",
+    "timezone": "Africa/Djibouti"
+  },
+  "modules": [
+    {
+      "id": 1,
+      "name": "Webhook - WhatsApp Cloud",
+      "type": "webhook",
+      "config": {
+        "method": "POST",
+        "path": "whatsapp/inbound",
+        "respond_immediately": true
+      },
+      "outputs": [2]
+    },
+    {
+      "id": 2,
+      "name": "Router - Message type",
+      "type": "router",
+      "branches": [
+        { "condition": "{{1.body.entry[0].changes[0].value.messages[0].type}} = text", "next": 3 },
+        { "condition": "{{1.body.entry[0].changes[0].value.messages[0].type}} = image", "next": 4 }
+      ],
+      "fallback": 7
+    },
+    {
+      "id": 3,
+      "name": "Set description (texte)",
+      "type": "function",
+      "config": {
+        "code": "return { description: bundle.inputData.body.entry[0].changes[0].value.messages[0].text.body };"
+      },
+      "outputs": [5]
+    },
+    {
+      "id": 4,
+      "name": "Vision OCR",
+      "type": "http",
+      "config": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/responses",
+        "headers": {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer {{OPENAI_API_KEY}}"
+        },
+        "body": {
+          "model": "{{OPENAI_MODEL_VISION}}",
+          "input": [
+            {
+              "role": "user",
+              "content": [
+                { "type": "input_text", "text": "Lis ce ticket de caisse et retourne le texte brut." },
+                { "type": "input_image", "image_url": "{{1.body.entry[0].changes[0].value.messages[0].image.link}}" }
+              ]
+            }
+          ]
+        }
+      },
+      "outputs": [6]
+    },
+    {
+      "id": 5,
+      "name": "Create Airtable draft",
+      "type": "airtable.create",
+      "config": {
+        "connection": "{{AIRTABLE_CONNECTION}}",
+        "baseId": "{{AIRTABLE_BASE_ID}}",
+        "tableId": "{{AIRTABLE_TABLE_MOVEMENTS}}",
+        "fields": {
+          "id_entreprise": "{{DEFAULT_COMPANY_ID}}",
+          "date": "{{now}}",
+          "type": "depense",
+          "montant": 0,
+          "devise": "FDJ",
+          "description": "{{2.output.description}}",
+          "source": "whatsapp",
+          "statut": "brouillon"
+        }
+      },
+      "outputs": [7]
+    },
+    {
+      "id": 6,
+      "name": "Transform OCR to description",
+      "type": "function",
+      "config": {
+        "code": "const text = bundle.inputData.response.output[0].content[0].text;return { description: text };"
+      },
+      "outputs": [5]
+    },
+    {
+      "id": 7,
+      "name": "Classify with OpenAI",
+      "type": "http",
+      "config": {
+        "method": "POST",
+        "url": "{{API_BASE_URL}}/ai/classify",
+        "headers": {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer {{SERVICE_JWT}}"
+        },
+        "body": {
+          "description": "{{2.output.description}}",
+          "montant": 0,
+          "type": "depense",
+          "devise": "FDJ",
+          "date": "{{formatDate(now; 'YYYY-MM-DD')}}",
+          "tier": "{{1.body.entry[0].changes[0].value.contacts[0].wa_id}}"
+        }
+      },
+      "outputs": [8]
+    },
+    {
+      "id": 8,
+      "name": "Update Airtable record",
+      "type": "airtable.update",
+      "config": {
+        "connection": "{{AIRTABLE_CONNECTION}}",
+        "baseId": "{{AIRTABLE_BASE_ID}}",
+        "tableId": "{{AIRTABLE_TABLE_MOVEMENTS}}",
+        "recordId": "{{5.id}}",
+        "fields": {
+          "categorie": "{{7.body.categorie}}",
+          "ai_confiance": "{{7.body.score_confiance}}",
+          "statut": "{{if(lessThan(7.body.score_confiance;0.7);'brouillon';'valide')}}"
+        }
+      },
+      "outputs": [9]
+    },
+    {
+      "id": 9,
+      "name": "Notify low confidence",
+      "type": "slack.postMessage",
+      "config": {
+        "connection": "{{SLACK_CONNECTION}}",
+        "channel": "#compta-auto-alertes",
+        "text": "Pièce WhatsApp à valider - confiance {{round(7.body.score_confiance*100;0)}}%"
+      }
+    }
+  ],
+  "connections": {}
+}

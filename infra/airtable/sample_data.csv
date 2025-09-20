@@ -1,0 +1,21 @@
+id_mvt,id_entreprise,date,type,montant,devise,mode_paiement,id_tier,categorie,description,ai_confiance,statut,source
+MVT001,ENTREPRISE_DEMO,2025-01-05,vente,125000,FDJ,cash,TIER001,Ventes-Produits,Vente de 50 boîtes biscuits,0.92,valide,form
+MVT002,ENTREPRISE_DEMO,2025-01-08,vente,85000,FDJ,mobile_money,TIER002,Ventes-Services,Abonnement maintenance janvier,0.95,valide,form
+MVT003,ENTREPRISE_DEMO,2025-01-11,vente,43000,FDJ,virement,TIER003,Ventes-Produits,Commande express épices,0.88,valide,form
+MVT004,ENTREPRISE_DEMO,2025-01-15,vente,215000,FDJ,virement,TIER004,Ventes-Services,Contrat consulting trimestriel,0.91,valide,csv
+MVT005,ENTREPRISE_DEMO,2025-01-20,vente,64000,FDJ,carte,TIER002,Ventes-Produits,Vente pack fournitures bureau,0.89,valide,form
+MVT006,ENTREPRISE_DEMO,2025-01-25,vente,97000,FDJ,cash,TIER005,Ventes-Produits,Livraison boissons événement,0.93,valide,form
+MVT007,ENTREPRISE_DEMO,2025-02-03,vente,56000,FDJ,mobile_money,TIER006,Ventes-Produits,Vente pièces détachées,0.86,valide,whatsapp
+MVT008,ENTREPRISE_DEMO,2025-02-07,vente,78000,FDJ,carte,TIER007,Ventes-Services,Formation équipe client,0.9,valide,form
+MVT009,ENTREPRISE_DEMO,2025-02-14,vente,33000,FDJ,cash,TIER008,Ventes-Produits,Vente paniers cadeaux,0.88,valide,form
+MVT010,ENTREPRISE_DEMO,2025-02-19,vente,150000,FDJ,virement,TIER009,Ventes-Services,Projet digitalisation phase 1,0.94,valide,form
+MVT011,ENTREPRISE_DEMO,2025-01-06,depense,24000,FDJ,cash,TIER101,Fournitures,Achat papier et stylos,0.83,brouillon,whatsapp
+MVT012,ENTREPRISE_DEMO,2025-01-09,depense,125000,FDJ,virement,TIER102,Salaires,Paiement salaires janvier,0.99,valide,csv
+MVT013,ENTREPRISE_DEMO,2025-01-13,depense,68000,FDJ,mobile_money,TIER103,Loyer,Loyer entrepôt janvier,0.91,valide,form
+MVT014,ENTREPRISE_DEMO,2025-01-18,depense,14500,FDJ,carte,TIER104,Transport,Carburant livraison nord,0.87,valide,form
+MVT015,ENTREPRISE_DEMO,2025-01-22,depense,32000,FDJ,cash,TIER105,Energie,Facture électricité janvier,0.9,valide,form
+MVT016,ENTREPRISE_DEMO,2025-01-27,depense,27500,FDJ,mobile_money,TIER106,Telecom-Internet,Abonnement fibre,0.92,valide,form
+MVT017,ENTREPRISE_DEMO,2025-02-02,depense,38000,FDJ,carte,TIER107,Marketing,Campagne radio février,0.85,valide,form
+MVT018,ENTREPRISE_DEMO,2025-02-06,depense,21000,FDJ,cash,TIER108,Fournitures,Achat cartons emballage,0.84,valide,whatsapp
+MVT019,ENTREPRISE_DEMO,2025-02-12,depense,54000,FDJ,virement,TIER109,Transport,Location camion frigorifique,0.88,valide,form
+MVT020,ENTREPRISE_DEMO,2025-02-17,depense,11000,FDJ,mobile_money,TIER110,Divers,Snacks réunion partenaires,0.8,brouillon,form
