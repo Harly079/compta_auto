@@ -1,0 +1,388 @@
+{
+  "generated_at": "2025-09-20T14:33:13.113Z",
+  "movements": [
+    {
+      "id_mvt": "MVT0002",
+      "id_entreprise": "ENTREPRISE_DEMO",
+      "date": "2025-01-02",
+      "type": "depense",
+      "montant": 26000,
+      "devise": "FDJ",
+      "mode_paiement": "carte",
+      "id_tier": "FOUR004",
+      "categorie": "Telecom-Internet",
+      "description": "Abonnement internet fibre (2025-01)",
+      "ai_confiance": 0.82,
+      "statut": "valide",
+      "source": "demo-script",
+      "commentaire": "OK auto"
+    },
+    {
+      "id_mvt": "MVT0003",
+      "id_entreprise": "ENTREPRISE_DEMO",
+      "date": "2025-01-03",
+      "type": "vente",
+      "montant": 50000,
+      "devise": "FDJ",
+      "mode_paiement": "cash",
+      "id_tier": "CLIENT005",
+      "categorie": "Ventes-Services",
+      "description": "Formation équipe client (2025-01)",
+      "ai_confiance": 0.9,
+      "statut": "valide",
+      "source": "demo-script",
+      "commentaire": "OK auto"
+    },
+    {
+      "id_mvt": "MVT0004",
+      "id_entreprise": "ENTREPRISE_DEMO",
+      "date": "2025-01-13",
+      "type": "depense",
+      "montant": 42000,
+      "devise": "FDJ",
+      "mode_paiement": "virement",
+      "id_tier": "FOUR003",
+      "categorie": "Energie",
+      "description": "Facture électricité mensuelle (2025-01)",
+      "ai_confiance": 0.93,
+      "statut": "valide",
+      "source": "demo-script",
+      "commentaire": "OK auto"
+    },
+    {
+      "id_mvt": "MVT0001",
+      "id_entreprise": "ENTREPRISE_DEMO",
+      "date": "2025-01-18",
+      "type": "vente",
+      "montant": 96000,
+      "devise": "FDJ",
+      "mode_paiement": "mobile_money",
+      "id_tier": "CLIENT005",
+      "categorie": "Ventes-Produits",
+      "description": "Livraison panier gourmand (2025-01)",
+      "ai_confiance": 0.93,
+      "statut": "valide",
+      "source": "demo-script",
+      "commentaire": "OK auto"
+    },
+    {
+      "id_mvt": "MVT0005",
+      "id_entreprise": "ENTREPRISE_DEMO",
+      "date": "2025-01-22",
+      "type": "vente",
+      "montant": 54000,
+      "devise": "FDJ",
+      "mode_paiement": "carte",
+      "id_tier": "CLIENT001",
+      "categorie": "Ventes-Produits",
+      "description": "Commande coffrets cadeaux (2025-01)",
+      "ai_confiance": 0.84,
+      "statut": "valide",
+      "source": "demo-script",
+      "commentaire": "OK auto"
+    },
+    {
+      "id_mvt": "MVT0006",
+      "id_entreprise": "ENTREPRISE_DEMO",
+      "date": "2025-01-27",
+      "type": "depense",
+      "montant": 40500,
+      "devise": "FDJ",
+      "mode_paiement": "carte",
+      "id_tier": "FOUR001",
+      "categorie": "Energie",
+      "description": "Facture électricité mensuelle (2025-01)",
+      "ai_confiance": 0.79,
+      "statut": "valide",
+      "source": "demo-script",
+      "commentaire": "OK auto"
+    },
+    {
+      "id_mvt": "MVT0007",
+      "id_entreprise": "ENTREPRISE_DEMO",
+      "date": "2025-02-06",
+      "type": "vente",
+      "montant": 67500,
+      "devise": "FDJ",
+      "mode_paiement": "cash",
+      "id_tier": "CLIENT002",
+      "categorie": "Ventes-Produits",
+      "description": "Livraison panier gourmand (2025-02)",
+      "ai_confiance": 0.89,
+      "statut": "valide",
+      "source": "demo-script",
+      "commentaire": "OK auto"
+    },
+    {
+      "id_mvt": "MVT0010",
+      "id_entreprise": "ENTREPRISE_DEMO",
+      "date": "2025-02-14",
+      "type": "depense",
+      "montant": 33500,
+      "devise": "FDJ",
+      "mode_paiement": "mobile_money",
+      "id_tier": "FOUR001",
+      "categorie": "Energie",
+      "description": "Facture électricité mensuelle (2025-02)",
+      "ai_confiance": 0.92,
+      "statut": "valide",
+      "source": "demo-script",
+      "commentaire": "OK auto"
+    },
+    {
+      "id_mvt": "MVT0011",
+      "id_entreprise": "ENTREPRISE_DEMO",
+      "date": "2025-02-14",
+      "type": "vente",
+      "montant": 70500,
+      "devise": "FDJ",
+      "mode_paiement": "virement",
+      "id_tier": "CLIENT001",
+      "categorie": "Ventes-Services",
+      "description": "Formation équipe client (2025-02)",
+      "ai_confiance": 0.87,
+      "statut": "valide",
+      "source": "demo-script",
+      "commentaire": "OK auto"
+    },
+    {
+      "id_mvt": "MVT0008",
+      "id_entreprise": "ENTREPRISE_DEMO",
+      "date": "2025-02-16",
+      "type": "depense",
+      "montant": 34000,
+      "devise": "FDJ",
+      "mode_paiement": "carte",
+      "id_tier": "FOUR004",
+      "categorie": "Telecom-Internet",
+      "description": "Abonnement internet fibre (2025-02)",
+      "ai_confiance": 0.81,
+      "statut": "valide",
+      "source": "demo-script",
+      "commentaire": "OK auto"
+    },
+    {
+      "id_mvt": "MVT0009",
+      "id_entreprise": "ENTREPRISE_DEMO",
+      "date": "2025-02-18",
+      "type": "vente",
+      "montant": 48500,
+      "devise": "FDJ",
+      "mode_paiement": "cash",
+      "id_tier": "CLIENT004",
+      "categorie": "Ventes-Produits",
+      "description": "Commande coffrets cadeaux (2025-02)",
+      "ai_confiance": 0.84,
+      "statut": "valide",
+      "source": "demo-script",
+      "commentaire": "OK auto"
+    },
+    {
+      "id_mvt": "MVT0012",
+      "id_entreprise": "ENTREPRISE_DEMO",
+      "date": "2025-02-26",
+      "type": "depense",
+      "montant": 27000,
+      "devise": "FDJ",
+      "mode_paiement": "mobile_money",
+      "id_tier": "FOUR004",
+      "categorie": "Marketing",
+      "description": "Campagne réseaux sociaux (2025-02)",
+      "ai_confiance": 0.89,
+      "statut": "valide",
+      "source": "demo-script",
+      "commentaire": "OK auto"
+    },
+    {
+      "id_mvt": "MVT0013",
+      "id_entreprise": "ENTREPRISE_DEMO",
+      "date": "2025-03-01",
+      "type": "vente",
+      "montant": 123500,
+      "devise": "FDJ",
+      "mode_paiement": "mobile_money",
+      "id_tier": "CLIENT002",
+      "categorie": "Ventes-Services",
+      "description": "Installation système POS (2025-03)",
+      "ai_confiance": 0.86,
+      "statut": "valide",
+      "source": "demo-script",
+      "commentaire": "OK auto"
+    },
+    {
+      "id_mvt": "MVT0014",
+      "id_entreprise": "ENTREPRISE_DEMO",
+      "date": "2025-03-03",
+      "type": "depense",
+      "montant": 29000,
+      "devise": "FDJ",
+      "mode_paiement": "mobile_money",
+      "id_tier": "FOUR002",
+      "categorie": "Transport",
+      "description": "Logistique livraison régionale (2025-03)",
+      "ai_confiance": 0.85,
+      "statut": "valide",
+      "source": "demo-script",
+      "commentaire": "OK auto"
+    },
+    {
+      "id_mvt": "MVT0016",
+      "id_entreprise": "ENTREPRISE_DEMO",
+      "date": "2025-03-07",
+      "type": "depense",
+      "montant": 16500,
+      "devise": "FDJ",
+      "mode_paiement": "carte",
+      "id_tier": "FOUR005",
+      "categorie": "Fournitures",
+      "description": "Achat consommables bureau (2025-03)",
+      "ai_confiance": 0.84,
+      "statut": "valide",
+      "source": "demo-script",
+      "commentaire": "OK auto"
+    },
+    {
+      "id_mvt": "MVT0018",
+      "id_entreprise": "ENTREPRISE_DEMO",
+      "date": "2025-03-07",
+      "type": "depense",
+      "montant": 30500,
+      "devise": "FDJ",
+      "mode_paiement": "mobile_money",
+      "id_tier": "FOUR004",
+      "categorie": "Telecom-Internet",
+      "description": "Abonnement internet fibre (2025-03)",
+      "ai_confiance": 0.8,
+      "statut": "valide",
+      "source": "demo-script",
+      "commentaire": "OK auto"
+    },
+    {
+      "id_mvt": "MVT0015",
+      "id_entreprise": "ENTREPRISE_DEMO",
+      "date": "2025-03-15",
+      "type": "vente",
+      "montant": 75000,
+      "devise": "FDJ",
+      "mode_paiement": "virement",
+      "id_tier": "CLIENT001",
+      "categorie": "Ventes-Produits",
+      "description": "Livraison panier gourmand (2025-03)",
+      "ai_confiance": 0.93,
+      "statut": "valide",
+      "source": "demo-script",
+      "commentaire": "OK auto"
+    },
+    {
+      "id_mvt": "MVT0017",
+      "id_entreprise": "ENTREPRISE_DEMO",
+      "date": "2025-03-27",
+      "type": "vente",
+      "montant": 77500,
+      "devise": "FDJ",
+      "mode_paiement": "mobile_money",
+      "id_tier": "CLIENT005",
+      "categorie": "Ventes-Produits",
+      "description": "Livraison panier gourmand (2025-03)",
+      "ai_confiance": 0.89,
+      "statut": "valide",
+      "source": "demo-script",
+      "commentaire": "OK auto"
+    }
+  ],
+  "monthly_summary": [
+    {
+      "month": "2025-01",
+      "total_ventes": 200000,
+      "total_depenses": 108500,
+      "solde": 91500,
+      "top_depenses": [
+        {
+          "categorie": "Energie",
+          "montant": 82500
+        },
+        {
+          "categorie": "Telecom-Internet",
+          "montant": 26000
+        }
+      ]
+    },
+    {
+      "month": "2025-02",
+      "total_ventes": 186500,
+      "total_depenses": 94500,
+      "solde": 92000,
+      "top_depenses": [
+        {
+          "categorie": "Telecom-Internet",
+          "montant": 34000
+        },
+        {
+          "categorie": "Energie",
+          "montant": 33500
+        },
+        {
+          "categorie": "Marketing",
+          "montant": 27000
+        }
+      ]
+    },
+    {
+      "month": "2025-03",
+      "total_ventes": 276000,
+      "total_depenses": 76000,
+      "solde": 200000,
+      "top_depenses": [
+        {
+          "categorie": "Telecom-Internet",
+          "montant": 30500
+        },
+        {
+          "categorie": "Transport",
+          "montant": 29000
+        },
+        {
+          "categorie": "Fournitures",
+          "montant": 16500
+        }
+      ]
+    }
+  ],
+  "invoice_preview": {
+    "id_facture": "FAC-2025-031",
+    "entreprise": {
+      "nom": "PME Alpha",
+      "devise": "FDJ",
+      "tva": 0.1
+    },
+    "client": {
+      "nom": "Marché Central",
+      "email": "contact@marche-central.dj"
+    },
+    "items": [
+      {
+        "designation": "Installation système POS",
+        "qte": 1,
+        "pu": 165000
+      },
+      {
+        "designation": "Formation équipe client",
+        "qte": 1,
+        "pu": 68000
+      }
+    ],
+    "date": "2025-03-12",
+    "due_date": "2025-03-27",
+    "total_ht": 233000,
+    "total_tva": 23300,
+    "total_ttc": 256300
+  },
+  "report_preview": {
+    "resume": "En mars 2025, le chiffre d'affaires atteint 233000 FDJ pour trois contrats majeurs, tandis que les dépenses restent maîtrisées grâce à une réduction de 12% des frais logistiques. La marge opérationnelle progresse de 7 points vs février et le flux de trésorerie reste positif. Les postes marketing et énergie demeurent sous contrôle, mais la connexion fibre a connu deux incidents signalés par l'équipe terrain. Les encaissements clients sont conformes aux échéances et aucun retard critique n'est recensé, ce qui sécurise la clôture du trimestre.",
+    "actions": [
+      "Planifier une maintenance préventive pour la connexion fibre",
+      "Lancer une relance commerciale auprès des clients de février",
+      "Valider les budgets marketing du prochain trimestre"
+    ]
+  }
+}

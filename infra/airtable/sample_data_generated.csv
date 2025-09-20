@@ -1,0 +1,19 @@
+id_mvt,id_entreprise,date,type,montant,devise,mode_paiement,id_tier,categorie,description,ai_confiance,statut,source,commentaire
+MVT0002,ENTREPRISE_DEMO,2025-01-02,depense,26000,FDJ,carte,FOUR004,Telecom-Internet,Abonnement internet fibre (2025-01),0.82,valide,demo-script,OK auto
+MVT0003,ENTREPRISE_DEMO,2025-01-03,vente,50000,FDJ,cash,CLIENT005,Ventes-Services,Formation équipe client (2025-01),0.9,valide,demo-script,OK auto
+MVT0004,ENTREPRISE_DEMO,2025-01-13,depense,42000,FDJ,virement,FOUR003,Energie,Facture électricité mensuelle (2025-01),0.93,valide,demo-script,OK auto
+MVT0001,ENTREPRISE_DEMO,2025-01-18,vente,96000,FDJ,mobile_money,CLIENT005,Ventes-Produits,Livraison panier gourmand (2025-01),0.93,valide,demo-script,OK auto
+MVT0005,ENTREPRISE_DEMO,2025-01-22,vente,54000,FDJ,carte,CLIENT001,Ventes-Produits,Commande coffrets cadeaux (2025-01),0.84,valide,demo-script,OK auto
+MVT0006,ENTREPRISE_DEMO,2025-01-27,depense,40500,FDJ,carte,FOUR001,Energie,Facture électricité mensuelle (2025-01),0.79,valide,demo-script,OK auto
+MVT0007,ENTREPRISE_DEMO,2025-02-06,vente,67500,FDJ,cash,CLIENT002,Ventes-Produits,Livraison panier gourmand (2025-02),0.89,valide,demo-script,OK auto
+MVT0010,ENTREPRISE_DEMO,2025-02-14,depense,33500,FDJ,mobile_money,FOUR001,Energie,Facture électricité mensuelle (2025-02),0.92,valide,demo-script,OK auto
+MVT0011,ENTREPRISE_DEMO,2025-02-14,vente,70500,FDJ,virement,CLIENT001,Ventes-Services,Formation équipe client (2025-02),0.87,valide,demo-script,OK auto
+MVT0008,ENTREPRISE_DEMO,2025-02-16,depense,34000,FDJ,carte,FOUR004,Telecom-Internet,Abonnement internet fibre (2025-02),0.81,valide,demo-script,OK auto
+MVT0009,ENTREPRISE_DEMO,2025-02-18,vente,48500,FDJ,cash,CLIENT004,Ventes-Produits,Commande coffrets cadeaux (2025-02),0.84,valide,demo-script,OK auto
+MVT0012,ENTREPRISE_DEMO,2025-02-26,depense,27000,FDJ,mobile_money,FOUR004,Marketing,Campagne réseaux sociaux (2025-02),0.89,valide,demo-script,OK auto
+MVT0013,ENTREPRISE_DEMO,2025-03-01,vente,123500,FDJ,mobile_money,CLIENT002,Ventes-Services,Installation système POS (2025-03),0.86,valide,demo-script,OK auto
+MVT0014,ENTREPRISE_DEMO,2025-03-03,depense,29000,FDJ,mobile_money,FOUR002,Transport,Logistique livraison régionale (2025-03),0.85,valide,demo-script,OK auto
+MVT0016,ENTREPRISE_DEMO,2025-03-07,depense,16500,FDJ,carte,FOUR005,Fournitures,Achat consommables bureau (2025-03),0.84,valide,demo-script,OK auto
+MVT0018,ENTREPRISE_DEMO,2025-03-07,depense,30500,FDJ,mobile_money,FOUR004,Telecom-Internet,Abonnement internet fibre (2025-03),0.8,valide,demo-script,OK auto
+MVT0015,ENTREPRISE_DEMO,2025-03-15,vente,75000,FDJ,virement,CLIENT001,Ventes-Produits,Livraison panier gourmand (2025-03),0.93,valide,demo-script,OK auto
+MVT0017,ENTREPRISE_DEMO,2025-03-27,vente,77500,FDJ,mobile_money,CLIENT005,Ventes-Produits,Livraison panier gourmand (2025-03),0.89,valide,demo-script,OK auto
