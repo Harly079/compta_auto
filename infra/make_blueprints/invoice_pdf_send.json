@@ -1,0 +1,93 @@
+{
+  "name": "Compta-Auto - Générer & envoyer facture",
+  "description": "Déclenchement depuis Airtable, génération PDF via API, partage WhatsApp/email.",
+  "metadata": {
+    "version": "1.0.0",
+    "timezone": "Africa/Djibouti"
+  },
+  "modules": [
+    {
+      "id": 1,
+      "name": "Airtable Watch - Factures",
+      "type": "airtable.watch",
+      "config": {
+        "connection": "{{AIRTABLE_CONNECTION}}",
+        "baseId": "{{AIRTABLE_BASE_ID}}",
+        "tableId": "{{AIRTABLE_TABLE_INVOICES}}",
+        "viewId": "À envoyer",
+        "pollInterval": 300
+      },
+      "outputs": [2]
+    },
+    {
+      "id": 2,
+      "name": "Prepare payload",
+      "type": "function",
+      "config": {
+        "code": "const items = JSON.parse(bundle.inputData.record.fields.items || '[]');return { invoice: { id_facture: bundle.inputData.record.id, entreprise: { nom: bundle.inputData.record.fields.id_entreprise[0].name, devise: bundle.inputData.record.fields.devise || 'FDJ', tva: bundle.inputData.record.fields.tva || 0.1 }, client: { nom: bundle.inputData.record.fields.id_client[0].name, email: bundle.inputData.record.fields.client_email }, items, date: bundle.inputData.record.fields.date, due_date: bundle.inputData.record.fields.due_date } };"
+      },
+      "outputs": [3]
+    },
+    {
+      "id": 3,
+      "name": "API - Generate PDF",
+      "type": "http",
+      "config": {
+        "method": "POST",
+        "url": "{{API_BASE_URL}}/pdf/invoice",
+        "headers": {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer {{SERVICE_JWT}}"
+        },
+        "body": "{{JSON.stringify(2.output.invoice)}}"
+      },
+      "outputs": [4]
+    },
+    {
+      "id": 4,
+      "name": "Update Airtable PDF",
+      "type": "airtable.update",
+      "config": {
+        "connection": "{{AIRTABLE_CONNECTION}}",
+        "baseId": "{{AIRTABLE_BASE_ID}}",
+        "tableId": "{{AIRTABLE_TABLE_INVOICES}}",
+        "recordId": "{{1.recordId}}",
+        "fields": {
+          "pdf_url": "{{3.body.pdf_url}}",
+          "statut": "envoye"
+        }
+      },
+      "outputs": [5,6]
+    },
+    {
+      "id": 5,
+      "name": "WhatsApp Send",
+      "type": "whatsapp.sendDocument",
+      "config": {
+        "connection": "{{WHATSAPP_CONNECTION}}",
+        "phone_number_id": "{{WHATSAPP_PHONE_ID}}",
+        "to": "{{1.record.fields.contact_whatsapp}}",
+        "document_link": "{{3.body.pdf_url}}",
+        "caption": "Facture {{1.record.fields.id_facture}} - merci pour votre collaboration."
+      }
+    },
+    {
+      "id": 6,
+      "name": "Send email",
+      "type": "gmail.send",
+      "config": {
+        "connection": "{{GMAIL_CONNECTION}}",
+        "to": "{{1.record.fields.client_email}}",
+        "subject": "Facture {{1.record.fields.id_facture}}",
+        "body": "Bonjour {{1.record.fields.id_client[0].name}},\nVeuillez trouver votre facture : {{3.body.pdf_url}}",
+        "attachments": [
+          {
+            "url": "{{3.body.pdf_url}}",
+            "filename": "{{3.body.file_name}}"
+          }
+        ]
+      }
+    }
+  ],
+  "connections": {}
+}

@@ -1,0 +1,146 @@
+{
+  "name": "Compta-Auto - Rapport mensuel",
+  "description": "Scheduler mensuel pour agrégations, résumé IA, PDF et diffusion.",
+  "metadata": {
+    "version": "1.0.0",
+    "timezone": "Africa/Djibouti"
+  },
+  "modules": [
+    {
+      "id": 1,
+      "name": "Scheduler",
+      "type": "schedule",
+      "config": {
+        "cron": "0 8 1 * *"
+      },
+      "outputs": [2]
+    },
+    {
+      "id": 2,
+      "name": "Airtable - Aggregations",
+      "type": "airtable.aggregate",
+      "config": {
+        "connection": "{{AIRTABLE_CONNECTION}}",
+        "baseId": "{{AIRTABLE_BASE_ID}}",
+        "tableId": "{{AIRTABLE_TABLE_MOVEMENTS}}",
+        "formula": "DATETIME_FORMAT({date}, 'YYYY-MM') = {{formatDate(addMonths(now;-1); 'YYYY-MM')}}"
+      },
+      "outputs": [3]
+    },
+    {
+      "id": 3,
+      "name": "Build metrics",
+      "type": "function",
+      "config": {
+        "code": "const rows = bundle.inputData.records || []; const totalEntrees = rows.filter(r => r.fields.type === 'vente').reduce((sum, r) => sum + (r.fields.montant || 0), 0); const totalSorties = rows.filter(r => r.fields.type === 'depense').reduce((sum, r) => sum + (r.fields.montant || 0), 0); const solde = totalEntrees - totalSorties; const categories = {}; rows.filter(r => r.fields.type === 'depense').forEach(r => { const key = r.fields.categorie || 'Divers'; categories[key] = (categories[key] || 0) + (r.fields.montant || 0); }); const topCategories = Object.entries(categories).sort((a,b) => b[1]-a[1]).slice(0,3).map(c => c[0]); return { aggregates: { total_entrees: totalEntrees, total_sorties: totalSorties, top_3_categories_depenses: topCategories, clients_en_retard: [], solde_mois: solde, tendance_vs_mois_precedent: 'stable' } };"
+      },
+      "outputs": [4]
+    },
+    {
+      "id": 4,
+      "name": "IA Résumé",
+      "type": "http",
+      "config": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/responses",
+        "headers": {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer {{OPENAI_API_KEY}}"
+        },
+        "body": {
+          "model": "{{OPENAI_MODEL_TEXT}}",
+          "input": [
+            {
+              "role": "system",
+              "content": "Rôle: analyste financier\nDonnées: agrégats JSON (total_entrees, total_sorties, top_3_categories_depenses, clients_en_retard, solde_mois, tendance_vs_mois_precedent)\nObjectif: texte FR clair (150-200 mots) + \"🔧 Actions (3)\" bullet points\nTon: simple, pragmatique, orienté dirigeants"
+            },
+            {
+              "role": "user",
+              "content": "{{JSON.stringify(3.output.aggregates)}}"
+            }
+          ]
+        }
+      },
+      "outputs": [5]
+    },
+    {
+      "id": 5,
+      "name": "Créer rapport Airtable",
+      "type": "airtable.create",
+      "config": {
+        "connection": "{{AIRTABLE_CONNECTION}}",
+        "baseId": "{{AIRTABLE_BASE_ID}}",
+        "tableId": "{{AIRTABLE_TABLE_REPORTS}}",
+        "fields": {
+          "periode": "{{formatDate(addMonths(now;-1); 'YYYY-MM')}}",
+          "resume_txt": "{{4.body.output[0].content[0].text}}",
+          "pdf_url": ""
+        }
+      },
+      "outputs": [6]
+    },
+    {
+      "id": 6,
+      "name": "API - Générer PDF résumé",
+      "type": "http",
+      "config": {
+        "method": "POST",
+        "url": "{{API_BASE_URL}}/pdf/invoice",
+        "headers": {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer {{SERVICE_JWT}}"
+        },
+        "body": {
+          "entreprise": { "nom": "{{COMPANY_NAME}}", "devise": "FDJ", "tva": 0 },
+          "client": { "nom": "Rapport interne" },
+          "items": [
+            { "designation": "Résumé mensuel", "qte": 1, "pu": 0 }
+          ],
+          "date": "{{formatDate(now; 'YYYY-MM-DD')}}",
+          "due_date": "{{formatDate(now; 'YYYY-MM-DD')}}",
+          "notes": "{{4.body.output[0].content[0].text}}"
+        }
+      },
+      "outputs": [7]
+    },
+    {
+      "id": 7,
+      "name": "Mettre à jour PDF rapport",
+      "type": "airtable.update",
+      "config": {
+        "connection": "{{AIRTABLE_CONNECTION}}",
+        "baseId": "{{AIRTABLE_BASE_ID}}",
+        "tableId": "{{AIRTABLE_TABLE_REPORTS}}",
+        "recordId": "{{5.id}}",
+        "fields": {
+          "pdf_url": "{{6.body.pdf_url}}"
+        }
+      },
+      "outputs": [8,9]
+    },
+    {
+      "id": 8,
+      "name": "WhatsApp dirigeant",
+      "type": "whatsapp.sendDocument",
+      "config": {
+        "connection": "{{WHATSAPP_CONNECTION}}",
+        "phone_number_id": "{{WHATSAPP_PHONE_ID}}",
+        "to": "{{CEO_WHATSAPP}}",
+        "document_link": "{{6.body.pdf_url}}",
+        "caption": "Rapport mensuel {{formatDate(addMonths(now;-1); 'MMMM YYYY')}}"
+      }
+    },
+    {
+      "id": 9,
+      "name": "Email dirigeant",
+      "type": "gmail.send",
+      "config": {
+        "connection": "{{GMAIL_CONNECTION}}",
+        "to": "{{CEO_EMAIL}}",
+        "subject": "Rapport mensuel {{formatDate(addMonths(now;-1); 'MMMM YYYY')}}",
+        "body": "Bonjour,\nVotre rapport est disponible ici : {{6.body.pdf_url}}"
+      }
+    }
+  ],
+  "connections": {}
+}
